@@ -52,6 +52,11 @@ public class Main {
   String index() {
     return "index";
   }
+  
+   @RequestMapping("/test")
+  String index() {
+    return "";
+  }
 
   @RequestMapping("/db")
   String db(Map<String, Object> model) {
