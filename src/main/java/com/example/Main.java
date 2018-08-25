@@ -16,6 +16,7 @@
 
 package com.example;
 
+import java.security.MessageDigest;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -30,14 +31,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
-@Controller
+@RestController
 @SpringBootApplication
 public class Main
 {
@@ -50,23 +52,53 @@ public class Main
 
 	public static void main(String[] args) throws Exception
 	{
+
 		SpringApplication.run(Main.class, args);
 	}
 
 	@RequestMapping("/")
-	String index(Map<String, Object> model, @RequestParam("id") int id)
+	String index()
 	{
-		model.put("message", "Hello Denish :" + id);
-		return "index";
+		//model.put("message", "Hello Denish");
+		return "Hello Denish";
 
 	}
 
-	@RequestMapping("/test")
-
-	String index1()
+	@RequestMapping(path = "/hello", produces = MediaType.APPLICATION_JSON_VALUE)
+	public String sayHello()
 	{
 
-		return "index";
+		return "{\"name\":\"denish\"}";
+	}
+
+	@RequestMapping(path = "/generatesha256", produces = MediaType.TEXT_PLAIN_VALUE)
+	String index1(@RequestParam("text") String strInput)
+	{
+		String hash256 = "";
+		try
+		{
+			//System.out.println("Input:" + strInput);
+			MessageDigest digest = MessageDigest.getInstance("SHA-256");
+			byte[] hash = digest.digest(strInput.getBytes("UTF-8"));
+			StringBuffer hexString = new StringBuffer();
+			for (int i = 0; i < hash.length; i++)
+			{
+				String hex = Integer.toHexString(0xff & hash[i]);
+				if (hex.length() == 1)
+					hexString.append('0');
+				hexString.append(hex);
+			}
+			hash256 = hexString.toString();
+			//System.out.println(hash256);
+		}
+		catch (
+
+		Exception ex)
+		{
+			throw new RuntimeException(ex);
+		}
+		//model.put("message", hash256);
+		return hash256;
 	}
 
 	@RequestMapping("/db")
