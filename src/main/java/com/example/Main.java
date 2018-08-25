@@ -57,6 +57,7 @@ public class Main
 	{
 		model.put("message", "Hello Denish");
 		return "index";
+
 	}
 
 	@RequestMapping("/test")
