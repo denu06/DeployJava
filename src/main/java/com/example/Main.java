@@ -32,6 +32,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -53,16 +54,18 @@ public class Main
 	}
 
 	@RequestMapping("/")
-	String index(Map<String, Object> model)
+	String index(Map<String, Object> model, @RequestParam("id") int id)
 	{
-		model.put("message", "Hello Denish");
+		model.put("message", "Hello Denish :" + id);
 		return "index";
 
 	}
 
 	@RequestMapping("/test")
+
 	String index1()
 	{
+
 		return "index";
 	}
 
