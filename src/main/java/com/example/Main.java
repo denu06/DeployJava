@@ -63,7 +63,7 @@ public class Main
 	@RequestMapping("/test")
 	String index1()
 	{
-		return "";
+		return "index";
 	}
 
 	@RequestMapping("/db")
